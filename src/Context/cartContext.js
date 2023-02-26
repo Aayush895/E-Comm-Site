@@ -4,16 +4,20 @@ const CartContext = createContext();
 
 const getLocalStorageCartData = () => {
   let newCartItem = localStorage.getItem("ecommCart");
-  if (newCartItem === []) {
+  // if (newCartItem === []) {
+  //   return [];
+  // } else {
+  //   return JSON.parse(newCartItem);
+  const parsedData = JSON.parse(newCartItem);
+  if (!Array.isArray(parsedData)) {
     return [];
-  } else {
-    return JSON.parse(newCartItem);
   }
+  return parsedData;
 };
 
 const initialState = {
-    // The below cart is the initial cart used where the item added to the cart did not persist 
-    // whenever the browser was reloaded
+  // The below cart is the initial cart used where the item added to the cart did not persist
+  // whenever the browser was reloaded
   // cart: [],
   cart: getLocalStorageCartData(),
   deliveryFee: 50000,
@@ -23,7 +27,10 @@ const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
   const addToCart = (qty, id, singleProduct, stock) => {
-    dispatch({ type: "ADD_TO_CART", payload: { qty, id, singleProduct, stock } });
+    dispatch({
+      type: "ADD_TO_CART",
+      payload: { qty, id, singleProduct, stock },
+    });
   };
 
   const removeItem = (id) => {
@@ -41,7 +48,9 @@ const CartProvider = ({ children }) => {
   }, [state.cart]);
 
   return (
-    <CartContext.Provider value={{ ...state, addToCart, removeItem, clearCart }}>
+    <CartContext.Provider
+      value={{ ...state, addToCart, removeItem, clearCart }}
+    >
       {children}
     </CartContext.Provider>
   );
