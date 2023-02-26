@@ -1,0 +1,13 @@
+/* #category > li > .active {
+  color: purple;
+} */
+
+.active {
+  color: purple;
+  text-decoration: underline;
+}
+
+.active_navBar {
+  color: rgb(165 180 252);
+  text-decoration: none
+}
